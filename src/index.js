@@ -6,7 +6,7 @@ const fs = require('fs'),
 	  mergeav = require('./lib/av-merge'),
 	  microlib = require('./lib/microlib');
 
-const shouldDownloadVideo = false;
+const shouldDownloadVideo = true;
 
 var outputfolder = './output',
 	urls = `
@@ -83,7 +83,7 @@ function fullExist(destbase){
 
 async function dlAudio(url, dest){
 	var promise = new Promise(function(resolve, reject){
-		if(fs.existsSync(dest)){
+		if(fs.existsSync(`${outputfolder}/${dest}`)){
 			console.log('audio file exists, auto-resolving');
 			resolve();
 		}
@@ -112,14 +112,14 @@ async function dlAudio(url, dest){
 
 async function dlVideo(url, dest){
 	var promise = new Promise(function(resolve, reject){
-		if(fs.existsSync(dest)){
+		if(fs.existsSync(`${outputfolder}/${dest}`)){
 			console.log('video file exists, auto-resolving');
 			resolve();
 		}
 		else{
 			var dl = ytdl(url, {
 				quality: 'highestvideo',
-				filter: (format) => format.container === 'mp4'
+				//filter: (format) => format.container === 'mp4'
 			});
 			dl.on('progress', (chunksize, prog, total)=>{
 				//prog and total are in bytes
